@@ -12,6 +12,23 @@ class ProductRepository implements Contracts\ProductInterface
         return Product::query()
             ->when($filters, function ($query) use ($filters) {
                 foreach ($filters as $key => $value) {
+                    // name
+                    if ($key === 'name') {
+                        $query->where($key, 'like', '%' . $value . '%');
+                        continue;
+                    }
+
+                    // price range
+                    if ($key === 'price_min') {
+                        $query->where('price', '>=', $value);
+                        continue;
+                    }
+
+                    if ($key === 'price_max') {
+                        $query->where('price', '<=', $value);
+                        continue;
+                    }
+
                     $query->where($key, $value);
                 }
             })
