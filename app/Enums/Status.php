@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumValues;
+
 enum Status: int
 {
+    use EnumValues;
+
     case ACTIVE = 1;
     case INACTIVE = 0;
 
