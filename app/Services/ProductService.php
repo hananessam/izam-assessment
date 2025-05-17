@@ -28,7 +28,7 @@ class ProductService
     {
         return $this->productRepository->getAllProducts(
             $request->input('filters', []),
-            $request->input('sorts', []),
+            $request->input('sorts', ['created_at' => 'desc']),
             $request->input('per_page', 10),
             $request->input('page', 1)
         );
