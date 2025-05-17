@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\Status;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $guarded = ['id'];
 
@@ -19,6 +24,10 @@ class Product extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
+    ];
+
+    protected $appends = [
+        'thumbnail',
     ];
 
     public function scopeActive($query)
@@ -39,5 +48,18 @@ class Product extends Model
     public function scopeOutOfStock($query)
     {
         return $query->where('stock', 0);
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return $this->getFirstMediaUrl(conversionName: 'thumbnail');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('thumbnail')
+            ->fit(Fit::Fill, 300, 300)
+            ->nonQueued();
     }
 }
