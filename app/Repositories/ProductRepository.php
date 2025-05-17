@@ -7,7 +7,7 @@ use App\Repositories\Contracts;
 
 class ProductRepository implements Contracts\ProductInterface
 {
-    public function getAllProducts(array $filters = [], array $sorts = [], int $perPage = 10, int $page = 1)
+    public function getAllProducts(array $filters = [], array $sorts = [], int $perPage = 10, int $page = 1, array $with = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return Product::query()
             ->when($filters, function ($query) use ($filters) {
@@ -37,6 +37,7 @@ class ProductRepository implements Contracts\ProductInterface
                     $query->orderBy($key, $value);
                 }
             })
+            ->with($with)
             ->paginate($perPage, ['*'], 'page', $page);
     }
 }
