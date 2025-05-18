@@ -1,6 +1,7 @@
 import Button from '@mui/material/Button';
 import { useAuth } from '../hooks/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import { Box, Grid, Typography } from '@mui/material';
 
 export default function Products() {
     const navigate = useNavigate();
@@ -13,10 +14,11 @@ export default function Products() {
     }
 
     return <>
-        <div className="flex items-center justify-center">
-            <div className='me-4'>
-                <Button variant="outlined" href='/login' onClick={auth.logout}>Logout</Button>
-            </div>
-        </div>
+        <Grid container spacing={2} className="flex items-start justify-center w-full">
+            <Grid item xs={12} className="w-full max-w-4xl p-4">
+                <Typography variant="h4">Products</Typography>
+                {/* products */}
+            </Grid>
+        </Grid>
     </>;
 }
