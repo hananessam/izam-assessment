@@ -13,6 +13,7 @@ class RepositoriesProvider extends ServiceProvider
     {
         $this->app->bind(\App\Repositories\Contracts\ProductInterface::class, \App\Repositories\ProductRepository::class);
         $this->app->bind(\App\Repositories\Contracts\AuthInterface::class, \App\Repositories\AuthRepository::class);
+        $this->app->bind(\App\Repositories\Contracts\CartInterface::class, \App\Repositories\CartRepository::class);
     }
 
     /**

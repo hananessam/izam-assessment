@@ -7,9 +7,13 @@ use App\Repositories\Contracts;
 
 class ProductRepository implements Contracts\ProductInterface
 {
+    public function __construct(protected Product $product)
+    {
+    }
+
     public function getAllProducts(array $filters = [], array $sorts = [], int $perPage = 10, int $page = 1, array $with = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return Product::query()
+        return $this->product->query()
             ->when($filters, function ($query) use ($filters) {
                 foreach ($filters as $key => $value) {
                     // name
@@ -39,5 +43,10 @@ class ProductRepository implements Contracts\ProductInterface
             })
             ->with($with)
             ->paginate($perPage, ['*'], 'page', $page);
+    }
+
+    public function getProductById(int $id): ?Product
+    {
+        return $this->product->find($id)->first();
     }
 }

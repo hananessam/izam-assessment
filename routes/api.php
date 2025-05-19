@@ -14,6 +14,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/refresh-token', \App\Http\Controllers\Auth\AuthController::class . '@refreshToken')->name('auth.refresh-token');
     });
 
+    Route::group(['prefix' => 'cart'], function () {
+        Route::get('/', \App\Http\Controllers\CartController::class . '@index')->name('cart.index');
+        Route::post('/add', \App\Http\Controllers\CartController::class . '@add')->name('cart.add');
+        Route::post('/remove', \App\Http\Controllers\CartController::class . '@remove')->name('cart.remove');
+    });
+
     Route::group(['prefix' => 'products'], function () {
         Route::get('/', \App\Http\Controllers\ProductController::class . '@index')->name('products.index');
     });
