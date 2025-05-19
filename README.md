@@ -89,3 +89,7 @@ You can Login with the following credentials:
 Email: john@example.com
 Password: password
 ```
+
+
+### NOTE
+- The application is still in development, and some features may not be fully implemented.
