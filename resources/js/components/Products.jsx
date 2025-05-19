@@ -10,19 +10,36 @@ import {
 } from "@mui/material";
 import GetProducts from "../services/GetProducts";
 import { useState, useEffect } from "react";
-
+import { useAuth } from "../hooks/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 const ProductsGrid = () => {
     const [products, setProducts] = useState([]);
-    
-    GetProducts()
-        .then((data) => {
-            setProducts(data.data);
-        })
-        .catch((error) => {
+    const auth = useAuth();
+
+    const fetchProducts = async () => {
+        try {
+            const response = await GetProducts()
+                .then((response) => {
+                    if (response.status === 401) {
+                        auth.logout();
+                    }
+
+                    setProducts(response.data.data);
+                    return;
+                })
+                .catch((error) => {
+                    throw new Error(error.message);
+                });
+
+        } catch (error) {
             console.error("Error fetching products:", error);
-            return [];
-        });
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
     return (
         <>
         <Box sx={{ mb: 4 }}>
@@ -31,14 +48,14 @@ const ProductsGrid = () => {
             </Typography>
         </Box>
         <Grid container spacing={3}>
-            {products.map((product) => (
+            {products && products.map((product) => (
                 <Grid item size={{ xs:12, sm:6, md:4, lg:4 }} key={product.id}>
                     <Card>
                         <CardMedia
                             component="img"
                             height={200}
                             width={300}
-                            objectFit="cover"
+                            sx={{ objectFit: "contain" }}
                             image={product.media?.[0]?.original_url}
                             alt={product.name}
                         />

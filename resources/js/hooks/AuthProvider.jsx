@@ -2,11 +2,14 @@ import { useContext, createContext } from "react";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import SignIn from "../services/SignIn";
+import RefreshToken from "../services/RefreshToken";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null);
+    // check if user is sting in local storage
+    const localStorageUser = localStorage.getItem("user");
+    const [user, setUser] = useState(localStorageUser && typeof localStorageUser === "object" ? JSON.parse(localStorageUser) : null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
 
     const loginAction = async (email, password) => {
@@ -31,7 +34,22 @@ const AuthProvider = ({ children }) => {
         return <Navigate to="/login" />;
     };
 
-    return <AuthContext.Provider value={{ token, user, loginAction, logout }}>
+    // refresh token
+    const refreshToken = async () => {
+        const response = await RefreshToken(token)
+            .then((data) => {
+                setUser(data.user);
+                setToken(data.token);
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+                return data;
+            })
+            .catch((error) => {
+                throw new Error(error.message);
+            });
+    }
+
+    return <AuthContext.Provider value={{ token, user, loginAction, logout, refreshToken }}>
         {children}
     </AuthContext.Provider>;
 };
