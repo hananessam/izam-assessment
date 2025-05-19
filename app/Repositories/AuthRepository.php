@@ -17,6 +17,7 @@ class AuthRepository implements Contracts\AuthInterface
             return [
                 'user' => UserResource::make($user),
                 'token' => $token,
+                'expires_at' => now()->addMinutes(config('sanctum.expiration')),
             ];
         }
         throw new \Exception('Invalid credentials');
