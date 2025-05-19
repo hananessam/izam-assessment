@@ -59,6 +59,12 @@ Run migrations and seed the database:
 php artisan migrate --seed
 ```
 
+Create a symbolic link for storage:
+
+```bash
+php artisan storage:link
+```
+
 ### 3. Run the Application
 
 ```bash
