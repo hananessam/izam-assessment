@@ -12,10 +12,10 @@ import GetProducts from "../services/GetProducts";
 import { useState, useEffect } from "react";
 
 
-const ProductsGrid = async () => {
+const ProductsGrid = () => {
     const [products, setProducts] = useState([]);
     
-    await GetProducts()
+    GetProducts()
         .then((data) => {
             setProducts(data.data);
         })
