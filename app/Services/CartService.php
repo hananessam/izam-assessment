@@ -15,9 +15,9 @@ class CartService
         return $this->cartRepository->getCart($userId);
     }
 
-    public function addToCart($userId, array $data): void
+    public function addToCart($userId, array $data): array
     {
-        $this->cartRepository->addToCart($userId, $data);
+        return $this->cartRepository->addToCart($userId, $data);
     }
 
     public function removeFromCart($userId, array $data): void

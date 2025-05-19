@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddToCartRequest;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -22,11 +23,11 @@ class CartController extends Controller
         return response()->json($cartItems);
     }
 
-    public function add(Request $request): JsonResponse
+    public function add(AddToCartRequest $request): JsonResponse
     {
         $userId = auth()->id();
-        $this->cartService->addToCart($userId, $request->only('id', 'quantity'));
-        return response()->json(['message' => 'Product added to cart successfully']);
+        $cart = $this->cartService->addToCart($userId, $request->only('id', 'quantity'));
+        return response()->json($cart);
     }
 
     public function remove(Request $request): JsonResponse

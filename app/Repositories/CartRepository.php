@@ -40,7 +40,7 @@ class CartRepository implements Contracts\CartInterface
         ];
     }
 
-    public function addToCart($userId, array $data): void
+    public function addToCart($userId, array $data): array
     {
         $product = $this->productRepository->getProductById($data['id']);
         if ($product) {
@@ -49,14 +49,22 @@ class CartRepository implements Contracts\CartInterface
                 'total' => $product->price * ($data['quantity'] ?? 1),
             ]);
 
-            $this->cartProduct->create([
+            $this->cartProduct->updateOrCreate([
                 'cart_id' => $this->cart->id,
                 'product_id' => $data['id'],
                 'price' => $product->price,
                 'quantity' => $data['quantity'] ?? 1,
                 'total' => $product->price * ($data['quantity'] ?? 1),
             ]);
+
+            $this->cart->load('products.product');
         }
+
+        return [
+            'cart' => CartProductResource::collection($this->cart->products),
+            'total' => $this->cart->products->sum('total'),
+            'count' => $this->cart->products->count(),
+        ];
     }
 
     public function removeFromCart($userId, array $data): void
