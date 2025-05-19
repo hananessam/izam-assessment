@@ -13,5 +13,10 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Product::factory(100)->create();
+
+        $products = \App\Models\Product::all();
+        foreach ($products as $product) {
+            $product->addMediaFromUrl('https://picsum.photos/600/400')->toMediaCollection();
+        }
     }
 }
