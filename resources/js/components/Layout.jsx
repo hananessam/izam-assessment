@@ -3,23 +3,12 @@ import { useAuth } from '../hooks/AuthProvider';
 import { Box, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Cart from './Cart';
-import { useEffect, useState } from 'react';
-import GetCart from '../services/GetCart';
+import { useState } from 'react';
 
 export default function Layout() {
     const auth = useAuth();
     const user = auth.user;
     const [cartOpen, setCartOpen] = useState(false);
-    const [cart, setCart] = useState([]);
-    
-    useEffect(() => {
-        const fetchCart = async () => {
-            const response = await GetCart();
-            setCart(response.cart);
-        };
-
-        fetchCart();
-    }, []);
 
     return <>
         <Box className="flex flex-col items-center justify-start h-[90vh] w-[100vw]">
@@ -37,7 +26,7 @@ export default function Layout() {
             </Box>
 
             <Box>
-                <Cart cart={cart} setCart={setCart} cartOpen={cartOpen} setCartOpen={setCartOpen} />
+                <Cart cartOpen={cartOpen} setCartOpen={setCartOpen} />
             </Box>
 
             <Box className="w-full max-w-4xl p-4">

@@ -11,11 +11,13 @@ import {
 import GetProducts from "../services/GetProducts";
 import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/AuthProvider";
-import { Navigate } from "react-router-dom";
+import AddToCart from "../services/AddToCart";
+import { useCart } from "../hooks/CartProvider";
 
 const ProductsGrid = () => {
     const [products, setProducts] = useState([]);
     const auth = useAuth();
+    const { setCart, setCartCount, setCartTotal } = useCart();
 
     const fetchProducts = async () => {
         try {
@@ -40,6 +42,34 @@ const ProductsGrid = () => {
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    const handleAddToCart = async (productId, quantity) => {
+        try {
+            const response = await AddToCart(productId, quantity)
+                .then((response) => {
+                    if (response.status === 401) {
+                        auth.logout();
+                    }
+
+                    return response;
+                })
+                .catch((error) => {
+                    throw new Error(error.message);
+                });
+
+            if (response.status === 200) {
+                console.log(response);
+                setCart(response.data.cart);
+                setCartCount(response.data.count);
+                setCartTotal(response.data.total);
+                alert("Product added to cart");
+            } else {
+                alert("Error adding product to cart");
+            }
+        } catch (error) {
+            console.error("Error adding product to cart:", error);
+        }
+    }
     return (
         <>
         <Box sx={{ mb: 4 }}>
@@ -66,7 +96,7 @@ const ProductsGrid = () => {
                             <Typography color="text.secondary">{product.price}</Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" color="secondary">
+                            <Button size="small" color="secondary" onClick={() => handleAddToCart(product.id, 1)}>
                                 Add to Cart
                             </Button>
                         </CardActions>

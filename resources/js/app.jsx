@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Products from './components/Products';
 import AuthProvider from './hooks/AuthProvider';
 import PrivateRoute from './router/route';
+import { CartProvider } from './hooks/CartProvider';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -26,15 +27,17 @@ ReactDOM.createRoot(document.getElementById('app')).render(
         <CssBaseline /> 
         <BrowserRouter>
             <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route element={<PrivateRoute />}>
-                        <Route element={<Layout />}>
-                            <Route path="/products" element={<Products />} />
+                <CartProvider>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route element={<PrivateRoute />}>
+                            <Route element={<Layout />}>
+                                <Route path="/products" element={<Products />} />
+                            </Route>
                         </Route>
-                    </Route>
-                </Routes>
+                    </Routes>
+                </CartProvider>
             </AuthProvider>
         </BrowserRouter>
     </ThemeProvider>

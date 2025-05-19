@@ -1,6 +1,8 @@
 import { Box, Typography } from '@mui/material';
+import { useCart } from '../hooks/CartProvider';
 
-export default ({ cart, setCart, cartOpen, setCartOpen }) => {
+export default ({ cartOpen, setCartOpen }) => {
+    const { cart, cartCount, cartTotal } = useCart();
     console.log(cart);
     return (
         <>
@@ -34,28 +36,26 @@ export default ({ cart, setCart, cartOpen, setCartOpen }) => {
                             <Box className="flex items-center justify-between w-full max-w-4xl p-4 bg-white border-b border-gray-200">
                                 <Box className="flex items-center justify-start">
                                     <Box className="flex items-center justify-start w-full">
-                                        <Typography className="text-2xl font-bold">Items in Cart: </Typography>
                                         <Typography className="text-2xl font-bold">
-                                            {cart.count}
+                                            Items: {cartCount} items
                                         </Typography>
                                     </Box>
                                 </Box>
 
                                 <Box className="flex items-center justify-start">
-                                    <Typography className="text-2xl font-bold">Total: </Typography>
                                     <Typography className="text-2xl font-bold">
-                                        {cart.total}
+                                        Total: {cartTotal}
                                     </Typography>
                                 </Box>
                             </Box>
                         </Box>
 
-                        <Box className="flex items-center justify-start w-full">
-                            {cart && cart.cart && cart.cart.map((item, index) => (
+                        <Box className="flex flex-col items-center justify-start w-full">
+                            {cart && cart && cart.map((item, index) => (
                                 <Box key={index} className="w-full">
                                     <Box className="flex items-center justify-start w-full p-4 border-b border-gray-200">
                                         <Box className="flex items-center justify-start w-full">
-                                            <Typography className="text-xl font-bold">{item.product.name}</Typography>
+                                            <Typography className="text-xl font-bold">{item.product?.name}</Typography>
                                         </Box>
                                         <Box className="flex items-center justify-start w-full p-4">
                                             <Box className="flex items-center justify-start w-full">
