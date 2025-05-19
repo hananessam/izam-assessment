@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\CartProductResource;
 use App\Repositories\Contracts;
 use App\Repositories\Contracts\ProductInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,7 +22,7 @@ class CartRepository implements Contracts\CartInterface
     {
         $cart = $this->cart
             ->where('user_id', $userId)
-            ->with(['products'])
+            ->with(['products.product'])
             ->first();
 
         if (!$cart) {
@@ -34,7 +34,7 @@ class CartRepository implements Contracts\CartInterface
         }
         
         return [
-            'cart' => ProductResource::collection($cart->products),
+            'cart' => CartProductResource::collection($cart->products),
             'total' => $cart->products->sum('total'),
             'count' => $cart->products->count(),
         ];
