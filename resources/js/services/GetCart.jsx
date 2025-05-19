@@ -1,4 +1,4 @@
-const GetCart = async (email, password) => {
+const GetCart = async () => {
     const token = localStorage.getItem('token');
 
     const response = await fetch('/api/cart', {
