@@ -1,11 +1,12 @@
 import { Box, Typography } from '@mui/material';
 
-export default ({ cartOpen, setCartOpen }) => {
+export default ({ cart, setCart, cartOpen, setCartOpen }) => {
+    console.log(cart);
     return (
         <>
             {cartOpen && (
                 <Box className="h-[100vh] w-[100vw] fixed top-0 right-0 bg-black/50 z-[100]">
-                    <Box className="flex flex-col items-center justify-start h-[100vh] w-[50vw] absolute top-0 right-0 bg-white shadow-lg">
+                    <Box className="flex flex-col items-center justify-start h-[100vh] w-[70vw] absolute top-0 right-0 bg-white shadow-lg">
                         <Box className="flex items-center justify-between w-full max-w-4xl p-4 bg-white border-b border-gray-200">
                             {/* close */}
                             <Box>
@@ -27,6 +28,49 @@ export default ({ cartOpen, setCartOpen }) => {
                                     />
                                 </svg>
                             </Box>
+                        </Box>
+
+                        <Box className="flex flex-col items-center justify-start w-full max-w-4xl p-4">
+                            <Box className="flex items-center justify-between w-full max-w-4xl p-4 bg-white border-b border-gray-200">
+                                <Box className="flex items-center justify-start">
+                                    <Box className="flex items-center justify-start w-full">
+                                        <Typography className="text-2xl font-bold">Items in Cart: </Typography>
+                                        <Typography className="text-2xl font-bold">
+                                            {cart.count}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+
+                                <Box className="flex items-center justify-start">
+                                    <Typography className="text-2xl font-bold">Total: </Typography>
+                                    <Typography className="text-2xl font-bold">
+                                        {cart.total}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box className="flex items-center justify-start w-full">
+                            {cart && cart.cart && cart.cart.map((item, index) => (
+                                <Box key={index} className="w-full">
+                                    <Box className="flex items-center justify-start w-full p-4 border-b border-gray-200">
+                                        <Box className="flex items-center justify-start w-full">
+                                            <Typography className="text-xl font-bold">{item.product.name}</Typography>
+                                        </Box>
+                                        <Box className="flex items-center justify-start w-full p-4">
+                                            <Box className="flex items-center justify-start w-full">
+                                                <Typography className="text-xl font-bold">Price: {item.price}</Typography>
+                                            </Box>
+                                            <Box className="flex items-center justify-start w-full">
+                                                <Typography className="text-xl font-bold">Quantity: {item.quantity}</Typography>
+                                            </Box>
+                                            <Box className="flex items-center justify-start w-full">
+                                                <Typography className="text-xl font-bold">Total: {item.total}</Typography>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            ))}
                         </Box>
                     </Box>
                 </Box>
