@@ -64,3 +64,22 @@ php artisan migrate --seed
 ```bash
 composer run dev
 ```
+
+### 4. Access the Application
+Open your web browser and navigate to `http://localhost:8000` or the URL specified in your `.env` file.
+
+### 5. Frontend Assets
+To build the frontend assets, run:
+
+```bash
+npm run build
+```
+
+<!--  login -->
+### 6. Authentication
+You can Login with the following credentials:
+
+```bash
+Email: john@example.com
+Password: password
+```
