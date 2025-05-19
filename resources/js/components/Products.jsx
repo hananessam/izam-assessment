@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Grid,
     Card,
@@ -9,35 +8,21 @@ import {
     Button,
     Box,
 } from "@mui/material";
+import GetProducts from "../services/GetProducts";
+import { useState, useEffect } from "react";
 
-const products = [
-    {
-        id: 1,
-        name: "Wireless Headphones",
-        price: "$99.99",
-        image: "https://placehold.co/300x200?text=Headphones",
-    },
-    {
-        id: 2,
-        name: "Smartphone",
-        price: "$699.00",
-        image: "https://placehold.co/300x200?text=Smartphone",
-    },
-    {
-        id: 3,
-        name: "Fitness Tracker",
-        price: "$59.99",
-        image: "https://placehold.co/300x200?text=Fitness+Tracker",
-    },
-    {
-        id: 4,
-        name: "4K Monitor",
-        price: "$329.99",
-        image: "https://placehold.co/300x200?text=4K+Monitor",
-    },
-];
 
-const ProductsGrid = () => {
+const ProductsGrid = async () => {
+    const [products, setProducts] = useState([]);
+    
+    await GetProducts()
+        .then((data) => {
+            setProducts(data.data);
+        })
+        .catch((error) => {
+            console.error("Error fetching products:", error);
+            return [];
+        });
     return (
         <>
         <Box sx={{ mb: 4 }}>
@@ -54,7 +39,7 @@ const ProductsGrid = () => {
                             height={200}
                             width={300}
                             objectFit="cover"
-                            image={product.image}
+                            image={product.media?.[0]?.original_url}
                             alt={product.name}
                         />
                         <CardContent>

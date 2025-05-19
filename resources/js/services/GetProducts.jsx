@@ -1,4 +1,4 @@
-const Products = async () => {
+const GetProducts = async () => {
     const response = await fetch('/api/products', {
         method: 'GET',
         headers: {
@@ -10,4 +10,4 @@ const Products = async () => {
     return response.json();
 };
 
-export default Products;
+export default GetProducts;
